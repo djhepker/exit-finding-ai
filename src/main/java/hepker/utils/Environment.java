@@ -1,6 +1,7 @@
 package hepker.utils;
 
 import hepker.engine.ActionHandler;
+import hepker.engine.Engine;
 import hepker.graphics.GraphicsHandler;
 import lombok.Getter;
 
@@ -28,6 +29,7 @@ public final class Environment implements AIEnvironment {
         this.actionList = argActionList;
         this.finish = gHandler.getFinishSpace();
         this.distanceRewardAdjustor = 0.0;
+        this.traveller = new Point(-1, -1);
     }
 
     @Override
@@ -68,15 +70,22 @@ public final class Environment implements AIEnvironment {
     @Override
     public double getDecisionReward() {
         double updatedDistanceFromTarget = Math.hypot(finish.x - traveller.x, finish.y - traveller.y);
-        if (updatedDistanceFromTarget == 0.0) {
+        if (traveller.equals(finish)) {
             return 10.0;
+        } else if (Engine.getTurnCount() >= Engine.getFAILURE_TURN()) {
+            return -10.0;
         }
         double sig = MathUtils.getSigmoid(updatedDistanceFromTarget, 5, 1, -0.93);
         if (updatedDistanceFromTarget > distanceFromTarget) {
-            distanceRewardAdjustor += 0.05;
-            sig -= distanceRewardAdjustor;
+            double penaltySig = MathUtils.getSigmoid(++distanceRewardAdjustor, 50, 1, 0.06);
+            sig -= penaltySig;
         }
         distanceFromTarget = updatedDistanceFromTarget;
+
         return sig;
+    }
+
+    public boolean arrived() {
+        return traveller.equals(finish);
     }
 }

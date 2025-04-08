@@ -1,6 +1,6 @@
 package hepker.graphics;
 
-import hepker.utils.ColorConstants;
+import hepker.utils.SimulationConstants;
 import hepker.utils.MapUtils;
 import lombok.Getter;
 
@@ -46,7 +46,7 @@ public final class GraphicsHandler extends JFrame {
         for (int j = 0; j < 7; ++j) {
             for (int i = 0; i < 7; ++i) {
                 int index = MapUtils.getArrayIndex(i, j);
-                if (panels[index].getBackground() == ColorConstants.SUCCESS_GREEN) {
+                if (panels[index].getBackground() == SimulationConstants.SUCCESS_GREEN) {
                     return new Point(i, j);
                 }
             }

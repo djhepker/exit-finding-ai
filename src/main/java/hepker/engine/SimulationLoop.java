@@ -1,10 +1,18 @@
 package hepker.engine;
 
 public final class SimulationLoop implements Runnable {
+    private final int gameSpeed;
+
     private Engine engine;
     private Thread thread;
 
-    public SimulationLoop() {
+    private double successCount;
+    private double epochsPerformed;
+
+    public SimulationLoop(final int inputGameSpeed) {
+        this.gameSpeed = inputGameSpeed;
+        this.successCount = 0.0;
+        this.epochsPerformed = 0.0;
     }
 
     @Override
@@ -13,7 +21,7 @@ public final class SimulationLoop implements Runnable {
         try {
             while (engine.isRunning()) {
                 engine.update();
-                Thread.sleep(50);
+                Thread.sleep(gameSpeed);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -30,6 +38,12 @@ public final class SimulationLoop implements Runnable {
         try {
             if (thread != null) {
                 thread.join();
+            }
+            ++epochsPerformed;
+            if (engine.travellerArrived()) {
+                System.out.printf("Success. Successrate: %.2f\n", ++successCount / epochsPerformed);
+            } else {
+                System.out.printf("Failure. SuccessRate: %.2f\n", successCount / epochsPerformed);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

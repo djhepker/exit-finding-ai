@@ -38,11 +38,11 @@ public final class MapUtils {
             JPanel element = panels[i];
             if (element.getBackground() == Color.BLACK) {
                 state[i] = 0;
-            } else if (element.getBackground() == ColorConstants.SUCCESS_GREEN) {
+            } else if (element.getBackground() == SimulationConstants.SUCCESS_GREEN) {
                 state[i] = 1;
-            } else if (element.getBackground() == ColorConstants.ERROR_RED) {
+            } else if (element.getBackground() == SimulationConstants.ERROR_RED) {
                 state[i] = 2;
-            } else if (element.getBackground() == ColorConstants.GLACIER_WHITE) {
+            } else if (element.getBackground() == SimulationConstants.GLACIER_WHITE) {
                 state[i] = 3;
             } else {
                 throw new RuntimeException("Unknown color: " + element.getBackground());
@@ -50,7 +50,6 @@ public final class MapUtils {
         }
         return state;
     }
-
 
     public static String getStateString(int[] state) {
         if (state == null) {
@@ -84,7 +83,7 @@ public final class MapUtils {
 
                 int index = j * 7 + i;
 
-                if (panels[index].getBackground() == ColorConstants.GLACIER_WHITE) {
+                if (panels[index].getBackground() == SimulationConstants.GLACIER_WHITE) {
                     return new Point(i, j);
                 }
             }
