@@ -1,5 +1,6 @@
 package hepker.utils;
 
+import hepker.engine.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,7 +11,6 @@ import java.awt.Point;
 
 public final class MapUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(MapUtils.class);
-    private static int turnCounter = 0;
 
     private MapUtils() {
 
@@ -33,7 +33,7 @@ public final class MapUtils {
 
     public static int[] getStateIntArr(JPanel[] panels) {
         int[] state = new int[panels.length];
-        state[0] = turnCounter++;
+        state[0] = Engine.getTurnCount();
         for (int i = 1; i < panels.length; i++) {
             JPanel element = panels[i];
             if (element.getBackground() == Color.BLACK) {

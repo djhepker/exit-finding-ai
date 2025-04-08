@@ -5,18 +5,21 @@ import hepker.graphics.GraphicsHandler;
 import hepker.utils.ColorConstants;
 import hepker.utils.Environment;
 import hepker.utils.MapUtils;
+import lombok.Getter;
 
 import java.awt.Point;
 import java.util.ArrayList;
 
 public final class Engine {
+    @Getter
+    private static int turnCount = 0;
+
     private final GraphicsHandler gHandler;
     private final ActionHandler actionHandler;
     private final Environment env;
     private final Agent zero;
     private final ArrayList<Point> actionList;
 
-    private int turnCounter;
     private boolean isRunning;
 
     public Engine() {
@@ -28,8 +31,8 @@ public final class Engine {
             gHandler.setTileColor(MapUtils.getArrayIndex(0, 0), ColorConstants.GLACIER_WHITE);
             this.actionHandler = new ActionHandler(gHandler, actionList);
             this.env = new Environment(gHandler, actionHandler, actionList);
-            this.turnCounter = 0;
             this.isRunning = true;
+            turnCount = 0;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -50,7 +53,7 @@ public final class Engine {
                 zero.giveReward(reward);
                 zero.processData(stateKeyPrime, actionInt);
                 actionList.clear();
-                if (++turnCounter >= 150) {
+                if (++turnCount >= 100) {
                     isRunning = false;
                 }
             }
@@ -62,6 +65,7 @@ public final class Engine {
     public boolean isRunning() {
         if (!isRunning) {
             Agent.pushQTableUpdate();
+            gHandler.dispose();
         }
         return isRunning;
     }

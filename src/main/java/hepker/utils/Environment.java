@@ -69,12 +69,12 @@ public final class Environment implements AIEnvironment {
     public double getDecisionReward() {
         double updatedDistanceFromTarget = Math.hypot(finish.x - traveller.x, finish.y - traveller.y);
         if (updatedDistanceFromTarget == 0.0) {
-            return 1.0;
+            return 10.0;
         }
         double sig = MathUtils.getSigmoid(updatedDistanceFromTarget, 5, 1, -0.93);
         if (updatedDistanceFromTarget > distanceFromTarget) {
             distanceRewardAdjustor += 0.05;
-            sig -= distanceFromTarget;
+            sig -= distanceRewardAdjustor;
         }
         distanceFromTarget = updatedDistanceFromTarget;
         return sig;

@@ -2,7 +2,7 @@ package hepker;
 
 import hepker.ai.Agent;
 import hepker.engine.SimulationLoop;
-// TODO need to close the ui when an episode finishes
+
 public class Main {
     private static SimulationLoop simulationLoop;
 
