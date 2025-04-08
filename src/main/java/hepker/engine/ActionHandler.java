@@ -1,44 +1,27 @@
 package hepker.engine;
 
 import hepker.graphics.GraphicsHandler;
-import hepker.utils.ActionNode;
+import hepker.utils.SimulationConstants;
 import hepker.utils.MapUtils;
-import lombok.Getter;
 
+import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Point;
+import java.util.ArrayList;
 
 public final class ActionHandler {
     private final GraphicsHandler gHandler;
-    @Getter
-    private ActionNode head;
-    @Getter
-    private int listSize;
+    private final ArrayList<Point> actionList;
 
-    public ActionHandler(GraphicsHandler argGHandler) {
+    public ActionHandler(GraphicsHandler argGHandler, ArrayList<Point> argActionList) {
         this.gHandler = argGHandler;
-        this.listSize = 0;
-        this.head = null;
+        this.actionList = argActionList;
     }
 
-    public void handleAction(int actionInt) {
-        for (int i = 0; i < actionInt; ++i) {
-            head = head.getNext();
-        }
-        gHandler.setTileColor(MapUtils.getArrayIndex(head), Color.BLACK);
-        head = null;
-        listSize = 0;
-    }
-
-    /**
-     * Pushes node into list. FILO
-     *
-     * @param node Node to become head node
-     */
-    public void insertAction(ActionNode node) {
-        if (head != null) {
-            head.setNext(node);
-        }
-        head = node;
-        ++listSize;
+    public void handleAction(int actionInt, Point traveller) {
+        JPanel[] panels = gHandler.getPanels();
+        Point action = actionList.get(actionInt);
+        panels[MapUtils.getArrayIndex(action)].setBackground(SimulationConstants.GLACIER_WHITE);
+        panels[MapUtils.getArrayIndex(traveller)].setBackground(Color.BLACK);
     }
 }

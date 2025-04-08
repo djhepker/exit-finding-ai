@@ -1,5 +1,7 @@
 package hepker.graphics;
 
+import hepker.utils.SimulationConstants;
+import hepker.utils.MapUtils;
 import lombok.Getter;
 
 import javax.swing.JFrame;
@@ -8,6 +10,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Point;
 
 public final class GraphicsHandler extends JFrame {
     @Getter
@@ -37,5 +40,17 @@ public final class GraphicsHandler extends JFrame {
             String error = String.format("Nullptr thrown for position %d", position);
             throw new RuntimeException(error, e);
         }
+    }
+
+    public Point getFinishSpace() {
+        for (int j = 0; j < 7; ++j) {
+            for (int i = 0; i < 7; ++i) {
+                int index = MapUtils.getArrayIndex(i, j);
+                if (panels[index].getBackground() == SimulationConstants.SUCCESS_GREEN) {
+                    return new Point(i, j);
+                }
+            }
+        }
+        throw new RuntimeException("No finish space found");
     }
 }
